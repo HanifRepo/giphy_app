@@ -9,7 +9,6 @@ function load_giphy(query_name,type){
     };
     xhttp.open("GET", "https://api.giphy.com/v1/gifs/search?q="+query_name+"&api_key=jQJuVoXL04GZ04T2qA9yHPMMgMlwD19a&limit=50&offset="+offset_number+"", true);
     offset_number += 51;
-    console.log(offset_number);
     xhttp.send(); 
 }
 
@@ -47,7 +46,6 @@ function display_giphy(giphy_object,type){
         var div = document.createElement("div");
         div.className = "response_holder";
         var img_tag = document.createElement("img");
-        console.log(giphy_object.data[i]);
         img_tag.setAttribute("src",giphy_object.data[i].images.preview_gif.url);
         div.appendChild(img_tag);
         giphy_holder.appendChild(div);

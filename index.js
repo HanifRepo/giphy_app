@@ -7,7 +7,7 @@ function load_giphy(query_name,type){
             display_giphy(giphy_object,type);
         }
     };
-    xhttp.open("GET", "http://api.giphy.com/v1/gifs/search?q="+query_name+"&api_key=jQJuVoXL04GZ04T2qA9yHPMMgMlwD19a&limit=50&offset="+offset_number+"", true);
+    xhttp.open("GET", "https://api.giphy.com/v1/gifs/search?q="+query_name+"&api_key=jQJuVoXL04GZ04T2qA9yHPMMgMlwD19a&limit=50&offset="+offset_number+"", true);
     offset_number += 51;
     console.log(offset_number);
     xhttp.send(); 

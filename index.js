@@ -1,15 +1,30 @@
 var offset_number = 0;
+var isLoading = false;
+var api_key = "jQJuVoXL04GZ04T2qA9yHPMMgMlwD19a";
 function load_giphy(query_name,type){
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            var giphy_object = JSON.parse(this.responseText);
+    if(isLoading === false){
+        onLoading();
+        const fetchPromise =fetch("https://api.giphy.com/v1/gifs/search?q="+query_name+"&api_key="+api_key+"&limit=25&offset="+offset_number+"");
+        isLoading = true ;
+        fetchPromise.then(response => {
+            return response.json();
+        }).then(giphy_object => {
+            offset_number += 26;
             display_giphy(giphy_object,type);
-        }
-    };
-    xhttp.open("GET", "https://api.giphy.com/v1/gifs/search?q="+query_name+"&api_key=jQJuVoXL04GZ04T2qA9yHPMMgMlwD19a&limit=50&offset="+offset_number+"", true);
-    offset_number += 51;
-    xhttp.send(); 
+        }).catch(err => {
+            var giphy_holder = document.getElementById("giphy_holder");
+            while (giphy_holder.firstChild) {
+                giphy_holder.removeChild(giphy_holder.firstChild);
+            }
+            offLoading();
+            var error_line = document.createElement("div");
+            error_line.textContent = "There's seems to be a problem with the Intenet Connection";
+            error_line.className = "error_text";
+            giphy_holder.appendChild(error_line);
+        }).finally(function(){
+            isLoading = false ;
+        });
+    } 
 }
 
 function setup_most_popular(){
@@ -20,7 +35,7 @@ function setup_most_popular(){
 function search(){
     offset_number = 0;
     var query = document.getElementById("query_engine").value.trim();
-    if(query != ""){
+    if(query !== ""){
         query = query.replace(" ","+");
         load_giphy(query,0);
     }else{
@@ -35,13 +50,18 @@ function display_giphy(giphy_object,type){
         alert("No -gifs found");
         document.getElementById("query_engine").value='';
     }else{
-        if(type==0){
+        if(type===0){
             var giphy_holder = document.getElementById("giphy_holder");
             while (giphy_holder.firstChild) {
                 giphy_holder.removeChild(giphy_holder.firstChild);
             }
         }
     }
+    render_image(giphy_object);
+    offLoading();
+}
+
+function render_image(giphy_object){
     for(let i=0 ; i < giphy_object.data.length ; i++){
         var div = document.createElement("div");
         div.className = "response_holder";
@@ -50,17 +70,17 @@ function display_giphy(giphy_object,type){
         div.appendChild(img_tag);
         giphy_holder.appendChild(div);
     }
-}
+} 
 
-window.onscroll = function(ev) {
+document.onscroll = function(ev) {
     if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
         var query = document.getElementById("query_engine").value.trim();
-        if(query != ""){
+        if(query !== ""){
             query = query.replace(" ","+");
-			offset_number+=51;
+			offset_number+=26;
 			load_giphy(query,1);
         }else{
-            offset_number+=51;
+            offset_number+=26;
             query="most+popular";
             load_giphy(query,1);
         }
@@ -69,8 +89,19 @@ window.onscroll = function(ev) {
 
 var input = document.getElementById("query_engine");
 input.addEventListener("keyup", function(event) {
-  if (event.keyCode === 13) {
+    console.log(event.key);
+  if (event.key === "Enter") {
     event.preventDefault();
     search();
   }
 });
+
+function onLoading() {
+    document.getElementById("overlay").style.display = "block";
+    document.body.classList.add("stop-scrolling");
+}
+  
+function offLoading() {
+    document.getElementById("overlay").style.display = "none";
+    document.body.classList.remove("stop-scrolling");
+}

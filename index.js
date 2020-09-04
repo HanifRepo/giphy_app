@@ -57,8 +57,8 @@ window.onscroll = function(ev) {
         var query = document.getElementById("query_engine").value.trim();
         if(query != ""){
             query = query.replace(" ","+");
-            offset_number+=51;
-            load_giphy(query,1);
+			offset_number+=51;
+			load_giphy(query,1);
         }else{
             offset_number+=51;
             query="most+popular";
@@ -66,3 +66,11 @@ window.onscroll = function(ev) {
         }
     }
 };
+
+var input = document.getElementById("query_engine");
+input.addEventListener("keyup", function(event) {
+  if (event.keyCode === 13) {
+    event.preventDefault();
+    search();
+  }
+});

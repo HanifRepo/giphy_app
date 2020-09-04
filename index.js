@@ -1,6 +1,6 @@
 var offset_number = 0;
 var isLoading = false;
-var api_key = "jQJuVoXL04GZ04T2qA9yHPMMgMlwD19a";
+var api_key = "You_API_KEY";
 function load_giphy(query_name,type){
     if(isLoading === false){
         onLoading();

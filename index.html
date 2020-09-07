@@ -3,20 +3,19 @@
   <head>
     <link rel="stylesheet" type="text/css" href="index.css">
   </head>
-  <body onload="setup_most_popular()">
+  <body onload="setupPopular()">
     <div class="whole__container" id="whole__container">
-      <div id="overlay">
-        <div id="text">Loading . . .</div>
-      </div>
       <div class="header_container">
         <h1>Giphy Search</h1>
       </div>
       <div class="search__box_container">
         <input type="text" placeholder="Enter your thoughts..." id="query_engine">
-        <Button onclick="search()" class="button">Giphy me</Button>
+        <Button onclick="searchGiphy()" class="button">Giphy me</Button>
       </div>
       <div class="giphy_holder" id="giphy_holder">
 
+      </div>
+      <div id="sentinel">
       </div>
     </div>
     <script src="index.js"></script>
